@@ -13,7 +13,6 @@ function start(): void {
     app.use(bodyParser.json());
     app.use(cookieParser());
     app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
-    app.use(express.static("static"));
 
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (error) {

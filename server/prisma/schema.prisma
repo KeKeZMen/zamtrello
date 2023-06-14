@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  login    String @unique
+  password String
+
+  tokens Token[]
+  boards Board[]
+  tasks  Task[]
+
+  @@index([id])
+  @@map("users")
+}
+
+model Token {
+  id            Int    @id @default(autoincrement())
+  refresh_token String @unique
+  user_id       Int
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@index([id])
+  @@map("tokens")
+}
+
+model Board {
+  id      Int @id @default(autoincrement())
+  user_id Int
+
+  tasks Task[]
+  user  User   @relation(fields: [user_id], references: [id])
+
+  @@index([id])
+  @@map("boards")
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  board_id    Int
+  user_id     Int
+  title       String
+  description String
+  status      Status   @default(IN_WORK)
+  start_date  DateTime @default(now())
+  final_data  DateTime
+
+  board Board @relation(fields: [board_id], references: [id])
+  user  User  @relation(fields: [user_id], references: [id])
+
+  @@index([id])
+  @@map("tasks")
+}
+
+enum Status {
+  SUCCESS
+  IN_WORK
+  FAILED
+}
