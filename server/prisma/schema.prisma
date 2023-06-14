@@ -7,19 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       Int    @id @default(autoincrement())
-  login    String @unique
-  password String
-
-  tokens Token[]
-  boards Board[]
-  tasks  Task[]
-
-  @@index([id])
-  @@map("users")
-}
-
 model Token {
   id            Int    @id @default(autoincrement())
   refresh_token String @unique
@@ -31,12 +18,34 @@ model Token {
   @@map("tokens")
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  login    String @unique
+  password String
+
+  tokens     Token[]
+  userboards Userboards[]
+
+  @@index([id])
+  @@map("users")
+}
+
+model Userboards {
+  id       Int @id @default(autoincrement())
+  user_id  Int
+  board_id Int
+
+  user  User  @relation(fields: [user_id], references: [id])
+  board Board @relation(fields: [board_id], references: [id])
+}
+
 model Board {
-  id      Int @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
+  title   String
   user_id Int
 
-  tasks Task[]
-  user  User   @relation(fields: [user_id], references: [id])
+  tasks      Task[]
+  userboards Userboards[]
 
   @@index([id])
   @@map("boards")
@@ -53,7 +62,6 @@ model Task {
   final_data  DateTime
 
   board Board @relation(fields: [board_id], references: [id])
-  user  User  @relation(fields: [user_id], references: [id])
 
   @@index([id])
   @@map("tasks")
