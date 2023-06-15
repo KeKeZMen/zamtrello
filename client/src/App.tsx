@@ -7,6 +7,7 @@ import { reauthUser } from "./store/thunks/authThunk";
 import RequireAuth from "./hocs/requiredAuth";
 import Mainpage from "./pages/Mainpage";
 import Loginpage from "./pages/Loginpage";
+import Registerpage from "./pages/Registerpage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,6 +28,8 @@ function App() {
       />
 
       <Route element={<Loginpage />} path="/login" />
+
+      <Route element={<Registerpage />} path="/register" />
     </Routes>
   );
 }
