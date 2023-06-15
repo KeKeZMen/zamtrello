@@ -47,8 +47,8 @@ export default class UserService {
 
     const userData = await prisma.user.create({ data: { login, password: hashPassword } });
 
-    // return await this.login(login, password)
-    return {id: userData.id, login: userData.login}
+    return await this.login(login, password)
+    // return {id: userData.id, login: userData.login}
   }
 
   static async changePassword(login: string, oldPassword: string, newPassword: string){

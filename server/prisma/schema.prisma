@@ -42,7 +42,7 @@ model Userboards {
 model Board {
   id      Int    @id @default(autoincrement())
   title   String
-  user_id Int
+  creator_id Int
 
   tasks      Task[]
   userboards Userboards[]
@@ -59,7 +59,7 @@ model Task {
   description String
   status      Status   @default(IN_WORK)
   start_date  DateTime @default(now())
-  final_data  DateTime
+  final_date  DateTime
 
   board Board @relation(fields: [board_id], references: [id])
 

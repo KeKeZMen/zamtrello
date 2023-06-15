@@ -44,7 +44,7 @@ export default class UserController {
 
       const { login, password } = req.body
       const userData = await UserService.registration(login, password)
-      // res.cookie("refreshToken", userData.refreshToken, { maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true })
+      res.cookie("refreshToken", userData.refreshToken, { maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true })
       return res.json(userData)
     } catch (error) {
       next(error)
@@ -55,7 +55,7 @@ export default class UserController {
     try {
       const { login, oldPassword, newPassword } = req.body
       await UserService.changePassword(login, oldPassword, newPassword)
-      return res.json({ message: `Пароль для пользователя ${login} был сменен успешно!` })
+      return res.json({ message: `Пароль был сменен успешно!` })
     } catch (error) {
       next(error)
     }

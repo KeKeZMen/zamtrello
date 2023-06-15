@@ -3,6 +3,9 @@ import { config } from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import tasksRouter from "./routers/tasks-router.js";
+import userRouter from "./routers/users-router.js";
+import errorMiddleware from "./middlewares/error-middleware.js";
 
 config();
 const app = express();
@@ -13,6 +16,10 @@ function start(): void {
     app.use(bodyParser.json());
     app.use(cookieParser());
     app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
+
+    app.use("/tasks/api", tasksRouter)
+    app.use("/users/api", userRouter)
+    app.use(errorMiddleware)
 
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (error) {
