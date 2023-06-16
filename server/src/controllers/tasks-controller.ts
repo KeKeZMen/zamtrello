@@ -47,9 +47,9 @@ export default class TasksController {
 
   static async inviteBoard(req: Request, res: Response, next: NextFunction){
     try {
-      const { boardId, userId } = req.body
+      const { boardId, login: userLogin } = req.body
       const { id: creatorId } = req.body.user
-      await TasksService.inviteBoard(parseInt(boardId), parseInt(userId), parseInt(creatorId));
+      await TasksService.inviteBoard(parseInt(boardId), userLogin, parseInt(creatorId));
       return res.json({ message: "Вы пригласили пользователя в доску!" })
     } catch (error) {
       next(error)

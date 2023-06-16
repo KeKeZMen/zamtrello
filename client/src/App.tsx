@@ -8,6 +8,7 @@ import RequireAuth from "./hocs/requiredAuth";
 import Mainpage from "./pages/Mainpage";
 import Loginpage from "./pages/Loginpage";
 import Registerpage from "./pages/Registerpage";
+import Boardpage from "./pages/Boardpage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -25,6 +26,15 @@ function App() {
           </RequireAuth>
         }
         path="/"
+      />
+
+      <Route
+        element={
+          <RequireAuth>
+            <Boardpage />
+          </RequireAuth>
+        }
+        path="/board/:id"
       />
 
       <Route element={<Loginpage />} path="/login" />

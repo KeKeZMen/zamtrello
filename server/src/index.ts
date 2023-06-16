@@ -17,8 +17,8 @@ function start(): void {
     app.use(cookieParser());
     app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 
-    app.use("/tasks/api", tasksRouter)
-    app.use("/users/api", userRouter)
+    app.use("/api/tasks", tasksRouter)
+    app.use("/api/users", userRouter)
     app.use(errorMiddleware)
 
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

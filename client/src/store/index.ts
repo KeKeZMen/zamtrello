@@ -1,17 +1,18 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import authSlice from "./slices/authSlice";
+import { tasksApi } from "./slices/tasksApi";
 
 const RootReducer = combineReducers({
-  auth: authSlice
+  "auth": authSlice,
+  [tasksApi.reducerPath]: tasksApi.reducer
 });
 
 export const makeStore = () =>
   configureStore({
     reducer: RootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(
-      ),
+      getDefaultMiddleware().concat(tasksApi.middleware),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

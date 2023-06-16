@@ -49,3 +49,17 @@ export const logoutUser = createAsyncThunk(
     }
   }
 )
+
+export const registrationUser = createAsyncThunk(
+  "auth/registration",
+  async ({ login, password }: LoginType, thunkApi) => {
+    try {
+      const result = await $api.post<IAuthResponse>("/users/registration", { login, password });
+      localStorage.setItem("token", result.data.accessToken);
+      return result.data.user;
+    } catch (axiosError) {
+      const error = axiosError as AxiosError;
+      return thunkApi.rejectWithValue(error.response?.data);
+    }
+  }
+);

@@ -32,14 +32,14 @@ export default class TasksService {
     return await prisma.board.findMany({ where: { userboards: { some: { user_id: userId } } } })
   }
 
-  static async inviteBoard(boardId: number, userId: number, creatorId: number){
+  static async inviteBoard(boardId: number, login: string, creatorId: number){
     const creatorData = await prisma.board.findFirst({ where: { AND: { id: boardId, creator_id: creatorId } } })
     if(!creatorData) throw ApiError.badRequest("Вы не являетесь создателем доски!")
 
-    const user = await prisma.user.findFirst({ where: { id: userId } })
+    const user = await prisma.user.findFirst({ where: { login } })
     if(!user) throw ApiError.badRequest("Такого пользователя не существует!")
 
-    const userInBoard = await prisma.userboards.findFirst({ where: { AND: {user_id: user.id, board_id: boardId} } })
+    const userInBoard = await prisma.userboards.findFirst({ where: { AND: { user_id: user.id, board_id: boardId } } })
     if(userInBoard) throw ApiError.badRequest("Указанный пользователь уже является участником доски!")
 
     return await prisma.userboards.create({ data: { user_id: user.id, board_id: boardId } })
