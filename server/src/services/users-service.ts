@@ -45,10 +45,9 @@ export default class UserService {
 
     const hashPassword = createHash("sha256").update(password).digest("hex")
 
-    const userData = await prisma.user.create({ data: { login, password: hashPassword } });
+    await prisma.user.create({ data: { login, password: hashPassword } });
 
     return await this.login(login, password)
-    // return {id: userData.id, login: userData.login}
   }
 
   static async changePassword(login: string, oldPassword: string, newPassword: string){

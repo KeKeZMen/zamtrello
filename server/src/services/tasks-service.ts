@@ -24,6 +24,7 @@ export default class TasksService {
   static async leaveBoard(boardId: number, userId: number){
     const userBoard = await prisma.userboards.findFirst({ where: { AND: { board_id: boardId, user_id: userId } }, select: { id: true } })
     if(!userBoard) throw ApiError.badRequest("Вы пытаетесь покинуть несуществующую доску!")
+
     return await prisma.userboards.delete({ where: { id: userBoard.id } });
   }
 
@@ -45,26 +46,42 @@ export default class TasksService {
   }
 
   static async createTask(taskDescription: string, taskFinalData: Date, taskTitle: string, userId: number, boardId: number){
+    const userBoards = await prisma.userboards.findFirst({ where: { AND: { board_id: boardId, user_id: userId } } })
+    if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
+
     return await prisma.task.create({
-      data: { description: taskDescription, final_date: taskFinalData, title: taskTitle, user_id: userId, board_id: boardId },
+      data: { description: taskDescription, final_date: taskFinalData, title: taskTitle, creator_id: userId, board_id: boardId },
     });
   }
 
-  static async deleteTask(taskId: number){
+  static async deleteTask(taskId: number, userId: number){
+    const board = await prisma.board.findFirst({ where: { tasks: { some: { id: taskId } } } })
+    const userBoards = await prisma.userboards.findFirst({ where: { AND: { board_id: board?.id, user_id: userId } } })
+    if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
+
     return await prisma.task.delete({ where: { id: taskId } })
   }
 
-  static async successTask(taskId: number){
+  static async successTask(taskId: number, userId: number){
+    const board = await prisma.board.findFirst({ where: { tasks: { some: { id: taskId } } } })
+    const userBoards = await prisma.userboards.findFirst({ where: { AND: { board_id: board?.id, user_id: userId } } })
+    if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
+
     return await prisma.task.update({ where: { id: taskId }, data: { status: "SUCCESS" } })
   }
 
-  static async getTasks(boardId: number){
+  static async getTasks(boardId: number, userId: number){
+    const userBoards = await prisma.userboards.findFirst({ where: { AND: { board_id: boardId, user_id: userId } } })
+    if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
+
     const tasks = await prisma.task.findMany({ where: { board_id: boardId } })
 
-    return tasks.map((task) => {
+    for (const task of tasks) {
       if(task.final_date.getTime() < task.start_date.getTime() && task.status !== "SUCCESS") {
-        return prisma.task.update({ where: { id: task.id }, data: { status: "FAILED" } })
-      } else return task
-    })
+        await prisma.task.update({ where: { id: task.id }, data: { status: "FAILED" } })
+      }
+    }
+
+    return await prisma.task.findMany({ where: { board_id: boardId } })
   }
 }
