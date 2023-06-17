@@ -1,20 +1,12 @@
-import {
-  Container,
-  Button,
-  Skeleton,
-  Box,
-  Modal,
-  TextField,
-} from "@mui/material";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Container, Button, Box, Modal, TextField } from "@mui/material";
 
-import {
-  useCreateBoardMutation,
-  useGetBoardsQuery,
-} from "../store/slices/tasksApi";
+import { useCreateBoardMutation, useGetBoardsQuery } from "../store/slices/tasksApi";
 
 import Board from "../components/Board";
-import { useState } from "react";
+import Loading from "../components/Loading";
+import Layout from "../components/Layout";
 
 type CreateBoardFormType = {
   boardTitle: string;
@@ -30,13 +22,15 @@ const Mainpage = () => {
   const onSubmit: SubmitHandler<CreateBoardFormType> = (data) =>
     createBoard({ boardTitle: data.boardTitle });
 
-  const { data } = useGetBoardsQuery(null);
+  const { data, isLoading } = useGetBoardsQuery(null);
 
   return (
-    <Container component={"main"}>
-      {data?.map((board) => (
-        <Board board={board} />
-      ))}
+    <Layout>
+      <Box sx={{ display: "flex" }}>
+        {isLoading ? (<Loading />) : (data?.map((board) => <Board board={board} key={board.id} />))}
+      </Box>
+
+      <Button onClick={handleOpenModal}>Создать доску</Button>
 
       <Modal
         open={isOpenedModal}
@@ -75,10 +69,8 @@ const Mainpage = () => {
           </Button>
         </Box>
       </Modal>
-
-      <Button onClick={handleOpenModal}>Создать доску</Button>
-    </Container>
+    </Layout>
   );
 };
 
-export default Mainpage
+export default Mainpage;

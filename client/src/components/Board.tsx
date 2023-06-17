@@ -28,13 +28,13 @@ const Board: FC<PropsType> = ({ board }) => {
   const handleOpenModal = () => setIsOpenedModal(true);
   const handleCloseModal = () => setIsOpenedModal(false);
 
-  const [inviteToBoard, {}] = useInviteToBoardMutation();
+  const [inviteToBoard, { data }] = useInviteToBoardMutation();
   const { register, handleSubmit } = useForm<InviteFormType>();
   const onSubmit: SubmitHandler<InviteFormType> = (data) =>
     inviteToBoard({ boardId: board.id, login: data.login });
 
   return (
-    <Card key={board.id} sx={{ mt: 3, mb: 3 }}>
+    <Card sx={{ mr: 3 }}>
       <CardContent>
         <Link to={`/board/${board.id}`}>
           <Typography>{board.title}</Typography>
@@ -79,6 +79,7 @@ const Board: FC<PropsType> = ({ board }) => {
             </Button>
           </Box>
         </Modal>
+        {data && data.message}
       </CardContent>
     </Card>
   );

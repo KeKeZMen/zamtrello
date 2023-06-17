@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 
 import { Card, CardContent, Typography } from "@mui/material";
 
@@ -9,12 +9,17 @@ type PropsType = {
 };
 
 const Task: FC<PropsType> = ({ task }) => {
+  const handleDoubleClick = (e: MouseEvent<HTMLSpanElement>) => {
+    console.log(e.currentTarget)
+  }
+
   return (
-    <Card key={task.id}>
+    <Card key={task.id} sx={{ m: 3 }} draggable>
       <CardContent>
-        <Typography>{task.title}</Typography>
-        <Typography>{task.description}</Typography>
-        <Typography>{task.final_date.toLocaleString()}</Typography>
+        <Typography onDoubleClick={handleDoubleClick} variant="h2">{task.title}</Typography>
+        <Typography onDoubleClick={handleDoubleClick}>{task.description}</Typography>
+        <Typography onDoubleClick={handleDoubleClick}>{task.final_date.toLocaleString()}</Typography>
+        <Typography>{task.status}</Typography>
       </CardContent>
     </Card>
   );

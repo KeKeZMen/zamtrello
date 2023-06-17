@@ -39,10 +39,10 @@ export const tasksApi = createApi({
     }),
 
     inviteToBoard: build.mutation<TasksApiMessageType, InviteToBoardType>({
-      query: ({ boardId, userId }) => ({
+      query: ({ boardId, login }) => ({
         url: "/inviteboard",
         method: "PUT",
-        data: { boardId, userId },
+        data: { boardId, login },
       }),
     }),
 
