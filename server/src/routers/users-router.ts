@@ -7,7 +7,7 @@ import authMiddleware from "../middlewares/auth-middleware.js"
 const userRouter = Router()
 
 userRouter.post("/login", UserController.login)
-userRouter.get("/logout", UserController.logout)
+userRouter.post("/logout", UserController.logout)
 userRouter.post("/registration", [
     check("login", "Имя пользователя не может быть пустым!").notEmpty(),
     check("password", "Пароль должен быть больше 4 и меньше 20 символов!").isLength({ min: 4, max: 20 })

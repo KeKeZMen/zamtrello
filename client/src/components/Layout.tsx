@@ -12,7 +12,7 @@ const Layout: FC<PropsType> = ({ children }) => {
   return (
     <>
       <Nav />
-      <Container>{children}</Container>
+      <Container component="main">{children}</Container>
     </>
   );
 };

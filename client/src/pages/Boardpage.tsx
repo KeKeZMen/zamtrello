@@ -1,17 +1,15 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Button, Box, Modal, TextField } from "@mui/material";
+import { Button, Box, Modal, TextField, Typography } from "@mui/material";
 
-import {
-  useCreateTaskMutation,
-  useGetTasksQuery,
-} from "../store/slices/tasksApi";
+import { useCreateTaskMutation, useGetTasksQuery } from "../store/slices/tasksApi";
 
 import Task from "../components/Task";
 import Loading from "../components/Loading";
 import Layout from "../components/Layout";
+import ITask from "../models/ITask";
 
 type CreateTaskFormType = {
   boardId: number;
@@ -24,10 +22,6 @@ const Boardpage = () => {
   const { id: boardId } = useParams();
   if (!boardId) return <Loading />;
 
-  const [isOpenedModal, setIsOpenedModal] = useState(false);
-  const handleOpenModal = () => setIsOpenedModal(true);
-  const handleCloseModal = () => setIsOpenedModal(false);
-
   const [createTask, {}] = useCreateTaskMutation();
   const { register, handleSubmit } = useForm<CreateTaskFormType>();
   const onSubmit: SubmitHandler<CreateTaskFormType> = (data) =>
@@ -39,24 +33,56 @@ const Boardpage = () => {
     });
 
   const { data, isLoading } = useGetTasksQuery({ boardId: parseInt(boardId) });
+  
+  const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const [inWorkTasks, setInWorkTasks] = useState<Array<ITask>>([]);
+  const [failedTasks, setFailedTasks] = useState<Array<ITask>>([]);
+  const [successTasks, setSuccessTasks] = useState<Array<ITask>>([])
+
+  useEffect(() => {
+    if(data){
+      setInWorkTasks(data.filter(task => task.status === "IN_WORK"))
+      setFailedTasks(data.filter(task => task.status === "FAILED"))
+      setSuccessTasks(data.filter(task => task.status === "SUCCESS"))
+    }
+  }, [data])
+  
 
   return (
     <Layout>
       {isLoading ? (<Loading />) : (
-        <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-          <Box>
-            {(data?.map((task) => <Task task={task} key={task.id} />))}
+        <Box sx={{ display: "flex" }}>
+          <Box sx={{ width: `${100 / 3}%`, mr: 3 }}>
+            <Typography variant="h3" align="center">В работе</Typography>
+
+            <Box marginTop={2}>
+              {inWorkTasks.map(task => <Task task={task} key={task.id} />)}
+            </Box>
           </Box>
 
-          <Box>test</Box>
+          <Box sx={{ width: `${100 / 3}%`, mr: 3 }}>
+            <Typography variant="h3" align="center">Просроченные</Typography>
+
+            <Box marginTop={2}>
+              {failedTasks.map(task => <Task task={task} key={task.id} />)}
+            </Box>
+          </Box>
+
+          <Box sx={{ width: `${100 / 3}%` }}>
+            <Typography variant="h3" align="center">Выполненные</Typography>
+            
+            <Box marginTop={2}>
+              {successTasks.map(task => <Task task={task} key={task.id} />)}
+            </Box>
+          </Box>
         </Box>
       )}
 
-      <Button onClick={handleOpenModal}>Добавить задачу</Button>
+      <Button onClick={() => setIsOpenedModal(true)}>Добавить задачу</Button>
 
       <Modal
         open={isOpenedModal}
-        onClose={handleCloseModal}
+        onClose={() => setIsOpenedModal(false)}
         sx={{
           display: "flex",
           justifyContent: "center",

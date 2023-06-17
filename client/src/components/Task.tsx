@@ -14,12 +14,11 @@ const Task: FC<PropsType> = ({ task }) => {
   }
 
   return (
-    <Card key={task.id} sx={{ m: 3 }} draggable>
+    <Card key={task.id} sx={{ mb: 3 }} draggable>
       <CardContent>
-        <Typography onDoubleClick={handleDoubleClick} variant="h2">{task.title}</Typography>
+        <Typography onDoubleClick={handleDoubleClick} variant="h4">{task.title}</Typography>
         <Typography onDoubleClick={handleDoubleClick}>{task.description}</Typography>
         <Typography onDoubleClick={handleDoubleClick}>{task.final_date.toLocaleString()}</Typography>
-        <Typography>{task.status}</Typography>
       </CardContent>
     </Card>
   );

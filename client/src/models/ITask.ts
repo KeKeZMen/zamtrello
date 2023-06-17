@@ -4,13 +4,7 @@ export default interface ITask {
   creator_id: number;
   title: string;
   description: string;
-  status: Status;
+  status: "FAILED" | "IN_WORK" | "SUCCESS";
   start_date: Date;
   final_date: Date;
-}
-
-enum Status {
-  FAILED,
-  IN_WORK,
-  SUCCESS,
 }
