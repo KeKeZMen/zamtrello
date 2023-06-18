@@ -18,6 +18,7 @@ export const tasksApi = createApi({
   reducerPath: "tasks",
   baseQuery: axiosBaseQuery({ baseUrl: "/tasks" }),
   tagTypes: ["Board", "Task"],
+  refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
     // ---------------------------------------------------- BOARDS --------------------------------------------------------------------//
     createBoard: build.mutation<TasksApiMessageType, CreateBoardType>({

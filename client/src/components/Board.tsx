@@ -2,9 +2,9 @@ import { useState, FC } from "react";
 import { Link } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Box, Modal, Button, Typography, CardContent, Card, TextField } from "@mui/material";
+import { Box, Modal, Button, Typography, CardContent, Card, TextField, CardActions } from "@mui/material";
   
-import { useInviteToBoardMutation } from "../store/slices/tasksApi";
+import { useDeleteBoardMutation, useInviteToBoardMutation } from "../store/slices/tasksApi";
 import IBoard from "../models/IBoard";
 
 type PropsType = {
@@ -25,16 +25,22 @@ const Board: FC<PropsType> = ({ board }) => {
   const onSubmit: SubmitHandler<InviteFormType> = (data) =>
     inviteToBoard({ boardId: board.id, login: data.login });
 
+  const [deleteBoard, {}] = useDeleteBoardMutation()
+  const handleDeleteBoard = () => deleteBoard({ boardId: board.id })
+
   return (
     <>
-      <Card sx={{ m: 1 }}>
+      <Card sx={{ m: 1, width: 250 }}>
         <CardContent>
           <Link to={`/board/${board.id}`}>
-            <Typography>{board.title}</Typography>
+            <Typography variant="h4">{board.title}</Typography>
           </Link>
-
-          <Button onClick={handleOpenModal}>Добавить пользователя</Button>
         </CardContent>
+
+        <CardActions>
+          <Button onClick={handleOpenModal} size="small">Добавить</Button>
+          <Button onClick={handleDeleteBoard} size="small">Удалить</Button>
+        </CardActions>
       </Card>
 
       <Modal
@@ -65,8 +71,8 @@ const Board: FC<PropsType> = ({ board }) => {
             {...register("login")}
             fullWidth
           />
-          <Button variant="outlined" type="submit" fullWidth>
-            Подтвердить
+          <Button type="submit" fullWidth>
+            Добавить
           </Button>
         </Box>
       </Modal>

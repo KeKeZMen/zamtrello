@@ -22,8 +22,12 @@ const Boardpage = () => {
   const { id: boardId } = useParams();
   if (!boardId) return <Loading />;
 
-  const [createTask, {}] = useCreateTaskMutation();
+  const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const handleOpenModal = () => setIsOpenedModal(true)
+  const handleCloseModal = () => setIsOpenedModal(false);
+  
   const { register, handleSubmit } = useForm<CreateTaskFormType>();
+  const [createTask, {}] = useCreateTaskMutation();
   const onSubmit: SubmitHandler<CreateTaskFormType> = (data) =>
     createTask({
       boardId: parseInt(boardId),
@@ -33,27 +37,25 @@ const Boardpage = () => {
     });
 
   const { data, isLoading } = useGetTasksQuery({ boardId: parseInt(boardId) });
-  
-  const [isOpenedModal, setIsOpenedModal] = useState(false);
   const [inWorkTasks, setInWorkTasks] = useState<Array<ITask>>([]);
   const [failedTasks, setFailedTasks] = useState<Array<ITask>>([]);
   const [successTasks, setSuccessTasks] = useState<Array<ITask>>([])
-
   useEffect(() => {
-    if(data){
-      setInWorkTasks(data.filter(task => task.status === "IN_WORK"))
-      setFailedTasks(data.filter(task => task.status === "FAILED"))
-      setSuccessTasks(data.filter(task => task.status === "SUCCESS"))
-    }
+    data?.forEach(task => {
+      task.status === "IN_WORK" ? 
+        setInWorkTasks([...inWorkTasks, task]) : 
+        task.status === "FAILED" ? 
+          setFailedTasks([...failedTasks, task]) : 
+          setSuccessTasks([...successTasks, task])
+    })
   }, [data])
-  
 
   return (
     <Layout>
       {isLoading ? (<Loading />) : (
         <Box sx={{ display: "flex" }}>
           <Box sx={{ width: `${100 / 3}%`, mr: 3 }}>
-            <Typography variant="h3" align="center">В работе</Typography>
+            <Typography variant="h5" align="center">В работе</Typography>
 
             <Box marginTop={2}>
               {inWorkTasks.map(task => <Task task={task} key={task.id} />)}
@@ -61,7 +63,7 @@ const Boardpage = () => {
           </Box>
 
           <Box sx={{ width: `${100 / 3}%`, mr: 3 }}>
-            <Typography variant="h3" align="center">Просроченные</Typography>
+            <Typography variant="h5" align="center">Просроченные</Typography>
 
             <Box marginTop={2}>
               {failedTasks.map(task => <Task task={task} key={task.id} />)}
@@ -69,7 +71,7 @@ const Boardpage = () => {
           </Box>
 
           <Box sx={{ width: `${100 / 3}%` }}>
-            <Typography variant="h3" align="center">Выполненные</Typography>
+            <Typography variant="h5" align="center">Выполненные</Typography>
             
             <Box marginTop={2}>
               {successTasks.map(task => <Task task={task} key={task.id} />)}
@@ -78,11 +80,11 @@ const Boardpage = () => {
         </Box>
       )}
 
-      <Button onClick={() => setIsOpenedModal(true)}>Добавить задачу</Button>
+      <Button onClick={handleOpenModal}>Добавить задачу</Button>
 
       <Modal
         open={isOpenedModal}
-        onClose={() => setIsOpenedModal(false)}
+        onClose={handleCloseModal}
         sx={{
           display: "flex",
           justifyContent: "center",
