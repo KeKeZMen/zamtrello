@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Container, Button, Box, Modal, TextField } from "@mui/material";
+
+import { Button, Box, Modal, TextField, Card } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import { useCreateBoardMutation, useGetBoardsQuery } from "../store/slices/tasksApi";
 
@@ -28,9 +30,13 @@ const Mainpage = () => {
     <Layout>
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         {isLoading ? (<Loading />) : (data?.map((board) => <Board board={board} key={board.id} />))}
-      </Box>
 
-      <Button onClick={handleOpenModal}>Создать доску</Button>
+        <Card sx={{ m: 1, width: 250, display: "flex", justifyContent: 'center', alignItems: "center" }}>
+          <Button sx={{ height: "100%", width: "100%" }} onClick={handleOpenModal}>
+            <AddCircleOutlineIcon fontSize="large"/>
+          </Button>
+        </Card>
+      </Box>
 
       <Modal
         open={isOpenedModal}
