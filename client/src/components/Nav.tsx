@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { AppBar, IconButton, Toolbar, Drawer, Divider, Box, Button } from "@mui/material";
+import { AppBar, IconButton, Toolbar, Drawer, Box, Button, List, ListItemButton, ListItemIcon, ListItemText, Container } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { logoutUser } from "../store/thunks/authThunk";
@@ -19,30 +19,30 @@ const Nav = () => {
   return (
     <>
       <AppBar position="static" sx={{ mb: 2 }}>
-        <Toolbar variant="regular" sx={{ display: "flex", justifyContent: "space-between" }}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={handleOpenMenu}
-          >
-            <MenuIcon />
-          </IconButton>
+        <Container>
+          <Toolbar variant="regular" sx={{ display: "flex", justifyContent: "space-between" }} disableGutters>
+            <IconButton color="inherit" onClick={handleOpenMenu}>
+              <MenuIcon />
+            </IconButton>
 
-          <Button variant="contained" onClick={handleLogout}>Выйти</Button>
-        </Toolbar>
+            <Button variant="contained" onClick={handleLogout}>Выйти</Button>
+          </Toolbar>
+        </Container>
       </AppBar>
 
-      <Drawer open={isOpenedMenu} anchor="left">
-        <IconButton onClick={handleCloseMenu}>
-          <ChevronLeftIcon/>
-        </IconButton>
+      <Drawer open={isOpenedMenu} anchor="left" onClose={handleCloseMenu}>
+        <Box sx={{ width: 200 }}>
+          <List disablePadding>
+            <Link to="/">
+              <ListItemButton onClick={handleCloseMenu}>
+                <ListItemIcon>
+                  <DashboardIcon/>
+                </ListItemIcon>
 
-        <Divider/>
-
-        <Box p={3}>
-          <Link to="/">Доски</Link>
+                <ListItemText primary="Доски"/>
+              </ListItemButton>
+            </Link>
+          </List>
         </Box>
       </Drawer>
     </>

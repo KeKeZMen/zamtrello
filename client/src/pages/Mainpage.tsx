@@ -26,7 +26,7 @@ const Mainpage = () => {
 
   return (
     <Layout>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         {isLoading ? (<Loading />) : (data?.map((board) => <Board board={board} key={board.id} />))}
       </Box>
 
