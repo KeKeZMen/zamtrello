@@ -14,7 +14,7 @@ const Task: FC<PropsType> = ({ task }) => {
   }
 
   return (
-    <Card key={task.id} sx={{ mb: 3 }} draggable>
+    <Card key={task.id} sx={{ mb: 3, minHeight: 120  }} draggable>
       <CardContent>
         <Typography onDoubleClick={handleDoubleClick} variant="h4">{task.title}</Typography>
         <Typography onDoubleClick={handleDoubleClick}>{task.description}</Typography>

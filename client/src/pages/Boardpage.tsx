@@ -2,7 +2,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { Button, Box, Modal, TextField, Typography } from "@mui/material";
+import { Button, Box, Modal, TextField, Typography, Card } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import { useCreateTaskMutation, useGetTasksQuery } from "../store/slices/tasksApi";
 
@@ -59,6 +60,12 @@ const Boardpage = () => {
 
             <Box marginTop={2}>
               {inWorkTasks.map(task => <Task task={task} key={task.id} />)}
+
+              <Card sx={{ m: 1, display: "flex", justifyContent: 'center', alignItems: "center", height: 120 }}>
+                <Button sx={{ height: "100%", width: "100%" }} onClick={handleOpenModal}>
+                  <AddCircleOutlineIcon fontSize="large"/>
+                </Button>
+              </Card>
             </Box>
           </Box>
 
@@ -79,8 +86,6 @@ const Boardpage = () => {
           </Box>
         </Box>
       )}
-
-      <Button onClick={handleOpenModal}>Добавить задачу</Button>
 
       <Modal
         open={isOpenedModal}
