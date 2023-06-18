@@ -30,7 +30,7 @@ const Board: FC<PropsType> = ({ board }) => {
 
   return (
     <>
-      <Card sx={{ m: 1, width: 250 }}>
+      <Card sx={{ m: 1, width: 250, height: 125 }}>
         <CardContent>
           <Link to={`/board/${board.id}`}>
             <Typography variant="h4">{board.title}</Typography>

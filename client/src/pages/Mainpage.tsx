@@ -31,7 +31,7 @@ const Mainpage = () => {
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         {isLoading ? (<Loading />) : (data?.map((board) => <Board board={board} key={board.id} />))}
 
-        <Card sx={{ m: 1, width: 250, display: "flex", justifyContent: 'center', alignItems: "center" }}>
+        <Card sx={{ m: 1, width: 250, display: "flex", justifyContent: 'center', alignItems: "center", height: 125 }}>
           <Button sx={{ height: "100%", width: "100%" }} onClick={handleOpenModal}>
             <AddCircleOutlineIcon fontSize="large"/>
           </Button>

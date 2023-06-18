@@ -19,11 +19,11 @@ const Header: FC<PropsType> = ({ setIsOpenedMenu }) => {
     <AppBar position="static" sx={{ mb: 2 }}>
       <Container>
         <Toolbar variant="regular" sx={{ display: "flex", justifyContent: "space-between" }} disableGutters>
-          <IconButton color="inherit" onClick={handleOpenMenu}>
+          <IconButton color="inherit" onClick={handleOpenMenu} >
             <MenuIcon />
           </IconButton>
 
-          <Button variant="contained" onClick={handleLogout}>Выйти</Button>
+          <Button variant="outlined" color="inherit" onClick={handleLogout}>Выйти</Button>
         </Toolbar>
       </Container>
     </AppBar>
