@@ -4,7 +4,7 @@ export default interface ITask {
   creator_id: number;
   title: string;
   description: string;
-  status: "FAILED" | "IN_WORK" | "SUCCESS";
+  status: string
   start_date: Date;
   final_date: Date;
 }

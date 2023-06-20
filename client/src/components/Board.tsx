@@ -5,8 +5,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Modal, Button, Typography, CardContent, Card, TextField, CardActions } from "@mui/material";
   
 import { useDeleteBoardMutation, useInviteToBoardMutation, useLeaveFromBoardMutation } from "../store/slices/tasksApi";
-import IBoard from "../models/IBoard";
 import { useAppSelector } from "../hooks/reduxHooks";
+import IBoard from "../models/IBoard";
 
 type PropsType = {
   board: IBoard;

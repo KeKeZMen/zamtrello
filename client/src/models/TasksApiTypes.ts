@@ -1,3 +1,5 @@
+import ITask from "./ITask";
+
 export type CreateBoardType = {
   boardTitle: string;
 };
@@ -24,6 +26,7 @@ export type CreateTaskType = {
   taskFinalData: Date;
   taskTitle: string;
   boardId: number;
+  taskStatus: string;
 };
 
 export type SuccessTaskType = {
@@ -37,3 +40,8 @@ export type DeleteTaskType = {
 export type GetTasksType = {
   boardId: number;
 };
+
+export type GetTasksAnswerType = {
+  status: string
+  tasks: Array<ITask>
+}

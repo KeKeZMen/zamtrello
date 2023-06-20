@@ -9,16 +9,12 @@ type PropsType = {
 };
 
 const Task: FC<PropsType> = ({ task }) => {
-  const handleDoubleClick = (e: MouseEvent<HTMLSpanElement>) => {
-    console.log(e.currentTarget)
-  }
-
   return (
-    <Card key={task.id} sx={{ mb: 3, minHeight: 120  }} draggable>
+    <Card key={task.id} sx={{ mb: 3, minHeight: 120, width: 300 }} draggable>
       <CardContent>
-        <Typography onDoubleClick={handleDoubleClick} variant="h4">{task.title}</Typography>
-        <Typography onDoubleClick={handleDoubleClick}>{task.description}</Typography>
-        <Typography onDoubleClick={handleDoubleClick}>{task.final_date.toLocaleString()}</Typography>
+        <Typography variant="h4">{task.title}</Typography>
+        <Typography>{task.description}</Typography>
+        <Typography>{task.final_date.toLocaleString()}</Typography>
       </CardContent>
     </Card>
   );

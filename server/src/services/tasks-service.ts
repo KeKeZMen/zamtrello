@@ -45,12 +45,12 @@ export default class TasksService {
     return await prisma.userboards.create({ data: { user_id: user.id, board_id: boardId } })
   }
 
-  static async createTask(taskDescription: string, taskFinalData: Date, taskTitle: string, userId: number, boardId: number){
+  static async createTask(taskDescription: string, taskFinalData: Date, taskTitle: string, userId: number, boardId: number, status: string){
     const userBoards = await prisma.userboards.findFirst({ where: { AND: { board_id: boardId, user_id: userId } } })
     if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
 
     return await prisma.task.create({
-      data: { description: taskDescription, final_date: taskFinalData, title: taskTitle, creator_id: userId, board_id: boardId },
+      data: { description: taskDescription, final_date: taskFinalData, title: taskTitle, creator_id: userId, board_id: boardId, status },
     });
   }
 
@@ -75,13 +75,7 @@ export default class TasksService {
     if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
 
     const tasks = await prisma.task.findMany({ where: { board_id: boardId } })
-
-    for (const task of tasks) {
-      if(task.final_date.getTime() < task.start_date.getTime() && task.status !== "SUCCESS") {
-        await prisma.task.update({ where: { id: task.id }, data: { status: "FAILED" } })
-      }
-    }
-
-    return await prisma.task.findMany({ where: { board_id: boardId } })
+    const taskStatuses = Array.from(new Set(tasks.map(task => task.status)))
+    return taskStatuses.map((status) => ({ status, tasks: tasks.filter(task => task.status === status)}))
   }
 }

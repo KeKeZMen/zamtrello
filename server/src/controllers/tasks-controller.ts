@@ -58,9 +58,9 @@ export default class TasksController {
 
   static async createTask(req: Request, res: Response, next: NextFunction) {
     try {
-      const { taskDescription, taskFinalData, taskTitle, boardId } = req.body
+      const { taskDescription, taskFinalData, taskTitle, boardId, taskStatus } = req.body
       const { id: userId } = req.body.user
-      await TasksService.createTask(taskDescription, new Date(taskFinalData), taskTitle, parseInt(userId), parseInt(boardId))
+      await TasksService.createTask(taskDescription, new Date(taskFinalData), taskTitle, parseInt(userId), parseInt(boardId), taskStatus)
       return res.json({ message: "Задача успешно создана!" });
     } catch (error) {
       next(error)

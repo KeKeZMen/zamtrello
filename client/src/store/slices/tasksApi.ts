@@ -10,6 +10,7 @@ import {
   SuccessTaskType,
   DeleteTaskType,
   GetTasksType,
+  GetTasksAnswerType,
 } from "../../models/TasksApiTypes";
 import IBoard from "../../models/IBoard";
 import ITask from "../../models/ITask";
@@ -66,10 +67,10 @@ export const tasksApi = createApi({
 
     // ---------------------------------------------------- TASKS --------------------------------------------------------------------//
     createTask: build.mutation<TasksApiMessageType, CreateTaskType>({
-      query: ({ boardId, taskDescription, taskFinalData, taskTitle }) => ({
+      query: ({ boardId, taskDescription, taskFinalData, taskTitle, taskStatus }) => ({
         url: "/createtask",
         method: "POST",
-        data: { boardId, taskDescription, taskFinalData, taskTitle },
+        data: { boardId, taskDescription, taskFinalData, taskTitle, taskStatus },
       }),
       invalidatesTags: ["Task"],
     }),
@@ -92,7 +93,7 @@ export const tasksApi = createApi({
       invalidatesTags: ["Task"],
     }),
 
-    getTasks: build.query<Array<ITask>, GetTasksType>({
+    getTasks: build.query<Array<GetTasksAnswerType>, GetTasksType>({
       query: ({ boardId }) => ({
         url: `/board/${boardId}`,
         method: "GET",

@@ -57,7 +57,7 @@ model Task {
   creator_id     Int
   title       String
   description String
-  status      Status   @default(IN_WORK)
+  status      String   
   start_date  DateTime @default(now())
   final_date  DateTime
 
@@ -65,10 +65,4 @@ model Task {
 
   @@index([id])
   @@map("tasks")
-}
-
-enum Status {
-  SUCCESS
-  IN_WORK
-  FAILED
 }

@@ -1,54 +1,70 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { FC, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { Box, Button, Modal, TextField } from "@mui/material"
+import { Box, Typography, Card, Button, Modal, TextField } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PendingIcon from "@mui/icons-material/Pending";
 
-import { useCreateTaskMutation, useGetTasksQuery } from "../store/slices/tasksApi";
+import { useCreateTaskMutation } from "../store/slices/tasksApi";
+import ITask from "../models/ITask";
 
-import Loading from "../components/Loading";
-import Layout from "../components/Layout";
-import BoardColumn, { CreateTaskFormType } from "../components/BoardColumn";
+import Task from "./Task";
 
-const Boardpage = () => {
-  const { id: boardId } = useParams();
-  if (!boardId) return <Loading />;
+type PropsType = {
+  tasks: Array<ITask>;
+  status: string;
+  boardId: string;
+};
 
+export type CreateTaskFormType = {
+  boardId: number;
+  taskDescription: string;
+  taskTitle: string;
+  taskFinalData: Date;
+  taskStatus: string
+};
+
+const BoardColumn: FC<PropsType> = ({ boardId, status, tasks }) => {
   const { register, handleSubmit } = useForm<CreateTaskFormType>();
   const [createTask, { isLoading: isLoadingCreateTask }] = useCreateTaskMutation();
   const onSubmit: SubmitHandler<CreateTaskFormType> = (data) => 
-    createTask({ boardId: parseInt(boardId), taskDescription: data.taskDescription, taskTitle: data.taskTitle, taskFinalData: data.taskFinalData, taskStatus: data.taskStatus });
+    createTask({ boardId: parseInt(boardId), taskDescription: data.taskDescription, taskTitle: data.taskTitle, taskFinalData: data.taskFinalData, taskStatus: status });
+
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const handleOpenModal = () => setIsOpenedModal(true);
   const handleCloseModal = () => setIsOpenedModal(false);
 
-  const { data, isLoading } = useGetTasksQuery({ boardId: parseInt(boardId) });
-
   return (
     <>
-      <Layout>
-        {isLoading ? (<Loading />) : data?.map((tasks, index) => (
-          <BoardColumn boardId={boardId} status={tasks.status} tasks={tasks.tasks} key={index}/>
-          ))}
+      <Box sx={{ mr: 3, alignItems: "center" }}>
+        <Typography variant="h5" align="center">{status}</Typography>
 
-        <Button sx={{ ml: 3 }} onClick={handleOpenModal}>
-          {isLoadingCreateTask ? (<PendingIcon fontSize="large" />) : (<AddCircleOutlineIcon fontSize="large" />)}
-        </Button>
-      </Layout>
+        <Box marginTop={2}>
+          {tasks.map(task => <Task task={task} key={task.id} />)}
+          
+          <Card sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: 120, width: 300 }}>
+            <Button sx={{ height: "100%", width: "100%" }} onClick={handleOpenModal}>
+              {isLoadingCreateTask ? (<PendingIcon fontSize="large" />) : (<AddCircleOutlineIcon fontSize="large" />)}
+            </Button>
+          </Card>
+        </Box>
+      </Box>
 
       <Modal
         open={isOpenedModal}
         onClose={handleCloseModal}
-        sx={{ display: "flex", justifyContent: "center", mt: 20 }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: 20,
+        }}
       >
         <Box
           component={"form"}
           onSubmit={handleSubmit(onSubmit)}
           sx={{
             background: "white",
-            width: 300,
+            width: 400,
             maxHeight: 400,
             display: "flex",
             justifyContent: "center",
@@ -76,19 +92,12 @@ const Boardpage = () => {
           <TextField
             sx={{ mb: 2 }}
             required
-            label="Статус задачи"
-            {...register("taskStatus")}
-            fullWidth
-          />
-          <TextField
-            sx={{ mb: 2 }}
-            required
             {...register("taskFinalData")}
             type="date"
             fullWidth
           />
-          <Button type="submit" fullWidth>
-            Добавить
+          <Button variant="outlined" type="submit" fullWidth>
+            Подтвердить
           </Button>
         </Box>
       </Modal>
@@ -96,4 +105,4 @@ const Boardpage = () => {
   );
 };
 
-export default Boardpage;
+export default BoardColumn;
