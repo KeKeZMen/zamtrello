@@ -61,7 +61,7 @@ const Boardpage = () => {
             <Box marginTop={2}>
               {inWorkTasks.map(task => <Task task={task} key={task.id} />)}
 
-              <Card sx={{ m: 1, display: "flex", justifyContent: 'center', alignItems: "center", height: 120 }}>
+              <Card sx={{  display: "flex", justifyContent: 'center', alignItems: "center", height: 120 }}>
                 <Button sx={{ height: "100%", width: "100%" }} onClick={handleOpenModal}>
                   <AddCircleOutlineIcon fontSize="large"/>
                 </Button>

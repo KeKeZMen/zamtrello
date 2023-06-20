@@ -56,6 +56,7 @@ const Userform: FC<PropsType> = ({ onSubmitAction, title, linkHref, linkHrefText
           fullWidth
           label="Логин"
           autoFocus
+          autoComplete="on"
           {...register("login")}
         />
         <TextField
@@ -64,7 +65,7 @@ const Userform: FC<PropsType> = ({ onSubmitAction, title, linkHref, linkHrefText
           fullWidth
           label="Пароль"
           type="password"
-          autoComplete="current-password"
+          autoComplete="on"
           {...register("password")}
         />
         <Button

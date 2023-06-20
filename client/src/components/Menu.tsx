@@ -1,16 +1,7 @@
-import { useState, FC, SetStateAction } from "react";
+import { useState, FC } from "react";
 import { Link } from "react-router-dom";
 
-import {
-  Drawer,
-  Box,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Collapse,
-  Typography,
-} from "@mui/material";
+import { Drawer, Box, List, ListItemButton, ListItemIcon, ListItemText, Collapse, Typography } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
