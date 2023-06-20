@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { AppBar, IconButton, Toolbar, Button, Container } from "@mui/material";
+import { AppBar, IconButton, Toolbar, Button, Container, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useAppDispatch } from "../hooks/reduxHooks";
@@ -22,6 +22,8 @@ const Header: FC<PropsType> = ({ setIsOpenedMenu }) => {
           <IconButton color="inherit" onClick={handleOpenMenu} >
             <MenuIcon />
           </IconButton>
+
+          <Typography variant="h5">Ваше рабочее пространство</Typography>
 
           <Button variant="outlined" color="inherit" onClick={handleLogout}>Выйти</Button>
         </Toolbar>
