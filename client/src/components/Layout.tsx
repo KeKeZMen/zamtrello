@@ -16,7 +16,7 @@ const Layout: FC<PropsType> = ({ children }) => {
     <>
       <Header setIsOpenedMenu={setIsOpenedMenu}/>
       <Menu isOpenedMenu={isOpenedMenu} setIsOpenedMenu={setIsOpenedMenu}/>
-      <Container component="main" sx={{ display: "flex", overflowX: "scroll", height: "calc(100vh - 80px)" }} maxWidth="xl">{children}</Container>
+      <Container component="main" sx={{ display: "flex", overflowX: "scroll", minHeight: "calc(100vh - 80px)", mt: "80px" }} maxWidth="xl">{children}</Container>
     </>
   );
 };

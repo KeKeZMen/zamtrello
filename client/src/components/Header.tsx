@@ -16,7 +16,7 @@ const Header: FC<PropsType> = ({ setIsOpenedMenu }) => {
   const handleOpenMenu = () => setIsOpenedMenu(true);
 
   return (
-    <AppBar position="static" sx={{ mb: 2 }}>
+    <AppBar position="fixed" sx={{ mb: 2 }}>
       <Container>
         <Toolbar variant="regular" sx={{ display: "flex", justifyContent: "space-between" }} disableGutters>
           <IconButton color="inherit" onClick={handleOpenMenu} >
