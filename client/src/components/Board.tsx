@@ -4,8 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { Box, Modal, Button, Typography, CardContent, Card, TextField, CardActions } from "@mui/material";
   
-import { useDeleteBoardMutation, useInviteToBoardMutation } from "../store/slices/tasksApi";
+import { useDeleteBoardMutation, useInviteToBoardMutation, useLeaveFromBoardMutation } from "../store/slices/tasksApi";
 import IBoard from "../models/IBoard";
+import { useAppSelector } from "../hooks/reduxHooks";
 
 type PropsType = {
   board: IBoard;
@@ -16,6 +17,8 @@ type InviteFormType = {
 };
 
 const Board: FC<PropsType> = ({ board }) => {
+  const { user } = useAppSelector(state => state.auth)
+
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const handleOpenModal = () => setIsOpenedModal(true)
   const handleCloseModal = () => setIsOpenedModal(false);
@@ -28,6 +31,9 @@ const Board: FC<PropsType> = ({ board }) => {
   const [deleteBoard, {}] = useDeleteBoardMutation()
   const handleDeleteBoard = () => deleteBoard({ boardId: board.id })
 
+  const [leaveFromBoard, {}] = useLeaveFromBoardMutation()
+  const handleLeaveBoard = () => leaveFromBoard({ boardId: board.id })
+
   return (
     <>
       <Card sx={{ m: 1, width: 250, height: 125 }}>
@@ -38,8 +44,14 @@ const Board: FC<PropsType> = ({ board }) => {
         </CardContent>
 
         <CardActions>
-          <Button onClick={handleOpenModal} size="small">Добавить</Button>
-          <Button onClick={handleDeleteBoard} size="small">Удалить</Button>
+          {board.creator_id === user.id ? (
+            <>
+              <Button onClick={handleOpenModal} size="small">Добавить</Button>
+              <Button onClick={handleDeleteBoard} size="small">Удалить</Button>
+            </>
+          ) : (
+            <Button size="small" onClick={handleLeaveBoard}>Покинуть</Button>
+          )}
         </CardActions>
       </Card>
 
