@@ -7,10 +7,10 @@ import {
   InviteToBoardType,
   LeaveFromBoardType,
   CreateTaskType,
-  SuccessTaskType,
   DeleteTaskType,
   GetTasksType,
   GetTasksAnswerType,
+  ChangeTaskStatusType,
 } from "../../models/TasksApiTypes";
 import IBoard from "../../models/IBoard";
 import ITask from "../../models/ITask";
@@ -75,11 +75,11 @@ export const tasksApi = createApi({
       invalidatesTags: ["Task"],
     }),
 
-    successTask: build.mutation<TasksApiMessageType, SuccessTaskType>({
-      query: ({ taskId }) => ({
+    changeTaskStatus: build.mutation<TasksApiMessageType, ChangeTaskStatusType>({
+      query: ({ taskId, newStatus }) => ({
         url: "/successtask",
         method: "PATCH",
-        data: { taskId },
+        data: { taskId, newStatus },
       }),
       invalidatesTags: ["Task"],
     }),
@@ -112,5 +112,5 @@ export const {
   useCreateTaskMutation,
   useDeleteTaskMutation,
   useGetTasksQuery,
-  useSuccessTaskMutation,
+  useChangeTaskStatusMutation,
 } = tasksApi;

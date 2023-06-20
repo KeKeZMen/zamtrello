@@ -62,12 +62,12 @@ export default class TasksService {
     return await prisma.task.delete({ where: { id: taskId } })
   }
 
-  static async successTask(taskId: number, userId: number){
+  static async changeTaskStatus(taskId: number, newStatus: string, userId: number){
     const board = await prisma.board.findFirst({ where: { tasks: { some: { id: taskId } } } })
     const userBoards = await prisma.userboards.findFirst({ where: { AND: { board_id: board?.id, user_id: userId } } })
     if(!userBoards) throw ApiError.badRequest("Данной доски не существует!")
 
-    return await prisma.task.update({ where: { id: taskId }, data: { status: "SUCCESS" } })
+    return await prisma.task.update({ where: { id: taskId }, data: { status: newStatus } })
   }
 
   static async getTasks(boardId: number, userId: number){

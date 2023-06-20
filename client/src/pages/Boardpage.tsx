@@ -6,7 +6,7 @@ import { Box, Button, Modal, TextField } from "@mui/material"
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PendingIcon from "@mui/icons-material/Pending";
 
-import { useCreateTaskMutation, useGetTasksQuery } from "../store/slices/tasksApi";
+import { useChangeTaskStatusMutation, useCreateTaskMutation, useGetTasksQuery } from "../store/slices/tasksApi";
 
 import Loading from "../components/Loading";
 import Layout from "../components/Layout";
@@ -26,12 +26,18 @@ const Boardpage = () => {
 
   const { data, isLoading } = useGetTasksQuery({ boardId: parseInt(boardId) });
 
+  const [changeTaskStatus, {}] = useChangeTaskStatusMutation()
+  const onChangeStatus = (cardInfo: string, newStatus: string) => {
+    const parsedCardInfo = JSON.parse(cardInfo) as { id: number, status: string };
+    changeTaskStatus({ taskId: parsedCardInfo.id, newStatus })
+  }
+
   return (
     <>
       <Layout>
         {isLoading ? (<Loading />) : data?.map((tasks, index) => (
-          <BoardColumn boardId={boardId} status={tasks.status} tasks={tasks.tasks} key={index}/>
-          ))}
+          <BoardColumn boardId={boardId} status={tasks.status} tasks={tasks.tasks} key={index} changeTaskStatus={onChangeStatus}/>
+        ))}
 
         <Button sx={{ ml: 3 }} onClick={handleOpenModal}>
           {isLoadingCreateTask ? (<PendingIcon fontSize="large" />) : (<AddCircleOutlineIcon fontSize="large" />)}

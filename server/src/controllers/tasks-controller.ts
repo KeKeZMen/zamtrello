@@ -78,11 +78,11 @@ export default class TasksController {
     }
   }
 
-  static async successTask(req: Request, res: Response, next: NextFunction) {
+  static async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
     try {
-      const { taskId } = req.body
+      const { taskId, newStatus } = req.body
       const { id: userId } = req.body.user
-      await TasksService.successTask(parseInt(taskId), parseInt(userId))
+      await TasksService.changeTaskStatus(parseInt(taskId), newStatus, parseInt(userId))
       return res.json({ message: "Задача выполнена!" })
     } catch (error) {
       next(error)

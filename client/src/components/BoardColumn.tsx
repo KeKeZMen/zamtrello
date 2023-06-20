@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, DragEvent } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { Box, Typography, Card, Button, Modal, TextField } from "@mui/material";
@@ -14,6 +14,7 @@ type PropsType = {
   tasks: Array<ITask>;
   status: string;
   boardId: string;
+  changeTaskStatus: (cardInfo: string, newStatus: string) => void;
 };
 
 export type CreateTaskFormType = {
@@ -21,30 +22,70 @@ export type CreateTaskFormType = {
   taskDescription: string;
   taskTitle: string;
   taskFinalData: Date;
-  taskStatus: string
+  taskStatus: string;
 };
 
-const BoardColumn: FC<PropsType> = ({ boardId, status, tasks }) => {
+const BoardColumn: FC<PropsType> = ({ boardId, status, tasks, changeTaskStatus }) => {
   const { register, handleSubmit } = useForm<CreateTaskFormType>();
-  const [createTask, { isLoading: isLoadingCreateTask }] = useCreateTaskMutation();
-  const onSubmit: SubmitHandler<CreateTaskFormType> = (data) => 
-    createTask({ boardId: parseInt(boardId), taskDescription: data.taskDescription, taskTitle: data.taskTitle, taskFinalData: data.taskFinalData, taskStatus: status });
+  const [createTask, { isLoading: isLoadingCreateTask }] =
+    useCreateTaskMutation();
+  const onSubmit: SubmitHandler<CreateTaskFormType> = (data) =>
+    createTask({
+      boardId: parseInt(boardId),
+      taskDescription: data.taskDescription,
+      taskTitle: data.taskTitle,
+      taskFinalData: data.taskFinalData,
+      taskStatus: status,
+    });
 
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const handleOpenModal = () => setIsOpenedModal(true);
   const handleCloseModal = () => setIsOpenedModal(false);
 
+  const onDropHandler = (e: DragEvent<HTMLDivElement>) => {
+    changeTaskStatus(e.dataTransfer.getData("cardInfo"), status);
+  };
+
+  const dragHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <Box sx={{ mr: 3, alignItems: "center" }}>
-        <Typography variant="h5" align="center">{status}</Typography>
+      <Box
+        sx={{ mr: 3, alignItems: "center" }}
+        onDrop={onDropHandler}
+        onDragEnter={dragHandler}
+        onDragLeave={dragHandler}
+        onDragOver={dragHandler}
+      >
+        <Typography variant="h5" align="center">
+          {status}
+        </Typography>
 
         <Box marginTop={2}>
-          {tasks.map(task => <Task task={task} key={task.id} />)}
-          
-          <Card sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: 120, width: 300 }}>
-            <Button sx={{ height: "100%", width: "100%" }} onClick={handleOpenModal}>
-              {isLoadingCreateTask ? (<PendingIcon fontSize="large" />) : (<AddCircleOutlineIcon fontSize="large" />)}
+          {tasks.map((task) => (
+            <Task task={task} key={task.id} />
+          ))}
+
+          <Card
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 120,
+              width: 300,
+            }}
+          >
+            <Button
+              sx={{ height: "100%", width: "100%" }}
+              onClick={handleOpenModal}
+            >
+              {isLoadingCreateTask ? (
+                <PendingIcon fontSize="large" />
+              ) : (
+                <AddCircleOutlineIcon fontSize="large" />
+              )}
             </Button>
           </Card>
         </Box>

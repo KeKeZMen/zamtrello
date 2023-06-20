@@ -29,8 +29,9 @@ export type CreateTaskType = {
   taskStatus: string;
 };
 
-export type SuccessTaskType = {
+export type ChangeTaskStatusType = {
   taskId: number;
+  newStatus: string
 };
 
 export type DeleteTaskType = {

@@ -11,7 +11,7 @@ tasksRouter.delete("/deleteboard", authMiddleware, TasksController.deleteBoard)
 tasksRouter.delete("/leaveboard", authMiddleware, TasksController.leaveBoard)
 
 tasksRouter.post("/createtask", authMiddleware, TasksController.createTask)
-tasksRouter.patch("/successtask", authMiddleware, TasksController.successTask)
+tasksRouter.patch("/successtask", authMiddleware, TasksController.changeTaskStatus)
 tasksRouter.delete("/deletetask", authMiddleware, TasksController.deleteTask)
 tasksRouter.get("/board/:id", authMiddleware, TasksController.getTasks)
 
