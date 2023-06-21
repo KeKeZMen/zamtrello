@@ -14,5 +14,6 @@ userRouter.post("/registration", [
 ], UserController.registration)
 userRouter.post("/changepass", authMiddleware, UserController.changePassword)
 userRouter.get("/refresh", UserController.refresh)
+userRouter.get("/activate/:link", UserController.activateAccount)
 
 export default userRouter

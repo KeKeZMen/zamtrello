@@ -42,10 +42,9 @@ export default class UserController {
       const errors = validationResult(req)
       if(!errors.isEmpty()) return res.status(400).json({ message: "Ошибка при регистрации", errors })
 
-      const { login, password } = req.body
-      const userData = await UserService.registration(login, password)
-      res.cookie("refreshToken", userData.refreshToken, { maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true })
-      return res.json(userData)
+      const { login, password, email } = req.body
+      await UserService.registration(login, password, email)
+      return res.json({ message: "Вы успешно зарегистрировались!" })
     } catch (error) {
       next(error)
     }
@@ -56,6 +55,16 @@ export default class UserController {
       const { login, oldPassword, newPassword } = req.body
       await UserService.changePassword(login, oldPassword, newPassword)
       return res.json({ message: `Пароль был сменен успешно!` })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async activateAccount(req: Request, res: Response, next: NextFunction){
+    try {
+      const userUuid = req.params.link
+      await UserService.activateAccount(userUuid)
+      return res.redirect(process.env.CLIENT_URL || "http://localhsot:5173")
     } catch (error) {
       next(error)
     }

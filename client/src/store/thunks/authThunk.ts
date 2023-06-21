@@ -4,10 +4,16 @@ import axios, { AxiosError } from "axios";
 import $api from "../../http/axiosApi";
 import IAuthResponse from "../../models/IAuthResponse";
 
-type LoginType = {
+export type RegisterType = {
   login: string;
   password: string;
+  email: string
 };
+
+export type LoginType = {
+  login: string;
+  password: string;
+}
 
 export const loginUser = createAsyncThunk(
   "auth/login",
@@ -52,9 +58,9 @@ export const logoutUser = createAsyncThunk(
 
 export const registrationUser = createAsyncThunk(
   "auth/registration",
-  async ({ login, password }: LoginType, thunkApi) => {
+  async ({ login, password, email }: RegisterType, thunkApi) => {
     try {
-      const result = await $api.post<IAuthResponse>("/users/registration", { login, password });
+      const result = await $api.post<IAuthResponse>("/users/registration", { login, password, email });
       localStorage.setItem("token", result.data.accessToken);
       return result.data.user;
     } catch (axiosError) {

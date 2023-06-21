@@ -19,9 +19,12 @@ model Token {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  login    String @unique
-  password String
+  id           Int     @id @default(autoincrement())
+  login        String  @unique
+  email        String  @unique
+  password     String
+  is_activated Boolean @default(false)
+  uuid         String  @unique
 
   tokens     Token[]
   userboards Userboards[]
@@ -40,8 +43,8 @@ model Userboards {
 }
 
 model Board {
-  id      Int    @id @default(autoincrement())
-  title   String
+  id         Int    @id @default(autoincrement())
+  title      String
   creator_id Int
 
   tasks      Task[]
@@ -54,10 +57,10 @@ model Board {
 model Task {
   id          Int      @id @default(autoincrement())
   board_id    Int
-  creator_id     Int
+  creator_id  Int
   title       String
   description String
-  status      String   
+  status      String
   start_date  DateTime @default(now())
   final_date  DateTime
 

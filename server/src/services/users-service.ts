@@ -1,8 +1,9 @@
-import { createHash } from "crypto";
+import { createHash, randomUUID } from "crypto";
 
 import ApiError from "../exceptions/api-error.js";
 import IUser from "../models/IUser.js";
 import prisma from "./db-service.js";
+import MailService from "./mail-service.js";
 import TokenService from "./token-service.js";
 
 export default class UserService {
@@ -39,15 +40,22 @@ export default class UserService {
     return {...tokens, user: { id: user.id, login: user.login }};
   }
 
-  static async registration(login: string, password: string){
-    const user = await prisma.user.findFirst({ where: { login } })
-    if(user) throw ApiError.badRequest("Пользователь с таким login уже существует!")
+  static async registration(login: string, password: string, email: string){   
+    const userLogin = await prisma.user.findFirst({ where: { login } })
+    if (userLogin) throw ApiError.badRequest("Пользователь с таким login уже существует!")
+    const userEmail = await prisma.user.findFirst({ where: { email } })
+    if (userEmail) throw ApiError.badRequest("Пользователь с таким email уже существует!")
 
     const hashPassword = createHash("sha256").update(password).digest("hex")
+    const userUuid = randomUUID()
 
-    await prisma.user.create({ data: { login, password: hashPassword } });
+    await MailService.sendActivationMail(email, userUuid)
+    return await prisma.user.create({ data: { login, password: hashPassword, email, uuid: userUuid } });
+  }
 
-    return await this.login(login, password)
+  static async activateAccount(uuid: string){
+    const user = await prisma.user.update({ where: { uuid }, data: { is_activated: true } })
+    if(!user) throw new Error("Некорректная ссылка активации!")
   }
 
   static async changePassword(login: string, oldPassword: string, newPassword: string){
