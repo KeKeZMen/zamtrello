@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Skeleton, Container, Typography, Avatar, Box, Button, TextField } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PendingIcon from "@mui/icons-material/Pending";
 
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { registrationUser, RegisterType } from "../store/thunks/authThunk";
@@ -20,8 +21,6 @@ const Registerpage: FC = () => {
   useEffect(() => {
     if (isAuth) navigate("/");
   }, [isAuth]);
-
-  if (isLoading) return <Skeleton variant="rectangular" />;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -73,7 +72,7 @@ const Registerpage: FC = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Зарегистрироваться
+            {isLoading ? <PendingIcon /> : <>Зарегистрироваться</>}
           </Button>
           <Link to="/login">Есть аккаунт? Войти</Link>
         </Box>

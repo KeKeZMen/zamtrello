@@ -2,8 +2,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Skeleton, Container, Typography, Avatar, Box, Button, TextField } from "@mui/material";
+import { Container, Typography, Avatar, Box, Button, TextField } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PendingIcon from "@mui/icons-material/Pending";
 
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { LoginType, loginUser } from "../store/thunks/authThunk";
@@ -20,8 +21,6 @@ const Loginpage = () => {
   useEffect(() => {
     if (isAuth) navigate("/");
   }, [isAuth]);
-
-  if (isLoading) return <Skeleton variant="rectangular" height={"100vh"} />;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,9 +63,9 @@ const Loginpage = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Войти
+            {isLoading ? (<PendingIcon/>) : (<>Войти</>)}
           </Button>
-          <Link to="/register">Нет аккаунта? Зарегестрироваться</Link>
+          <Link to="/register">Нет аккаунта? Зарегистрироваться</Link>
         </Box>
       </Box>
 
