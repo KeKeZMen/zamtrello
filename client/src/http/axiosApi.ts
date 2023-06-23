@@ -2,7 +2,7 @@ import axios from "axios";
 
 import IAuthResponse from "../models/IAuthResponse";
 
-const API_URL = "http://localhost:3001/api";
+const API_URL = `${import.meta.env.VITE_SERVER_URL}/api`;
 
 const $api = axios.create({
   withCredentials: true,

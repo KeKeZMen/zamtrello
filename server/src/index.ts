@@ -1,5 +1,5 @@
 import express from "express";
-import { config } from "dotenv";
+import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -7,7 +7,7 @@ import tasksRouter from "./routers/tasks-router.js";
 import userRouter from "./routers/users-router.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
 
-config();
+dotenv.config();
 const app = express();
 const PORT = process.env.SERVER_PORT;
 

@@ -33,7 +33,7 @@ export const reauthUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkApi) => {
     try {
-      const result = await axios.get<IAuthResponse>("http://localhost:3001/api/users/refresh", { withCredentials: true });
+      const result = await axios.get<IAuthResponse>(`${import.meta.env.VITE_SERVER_URL}/api/users/refresh`, { withCredentials: true });
       localStorage.setItem('token', result.data.accessToken);
       return result.data.user;
     } catch (axiosError) {

@@ -13,7 +13,6 @@ import {
   ChangeTaskStatusType,
 } from "../../models/TasksApiTypes";
 import IBoard from "../../models/IBoard";
-import ITask from "../../models/ITask";
 
 export const tasksApi = createApi({
   reducerPath: "tasks",
