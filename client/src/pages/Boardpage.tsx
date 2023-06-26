@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -9,7 +9,7 @@ import PendingIcon from "@mui/icons-material/Pending";
 import { useChangeTaskStatusMutation, useCreateTaskMutation, useGetTasksQuery } from "../store/slices/tasksApi";
 
 import Loading from "../components/Loading";
-import Layout from "../components/Layout";
+const Layout = lazy(() => import("../components/Layout"));
 import BoardColumn, { CreateTaskFormType } from "../components/BoardColumn";
 
 const Boardpage = () => {

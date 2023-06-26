@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { Button, Box, Modal, TextField, Card } from "@mui/material";
@@ -8,7 +8,7 @@ import { useCreateBoardMutation, useGetBoardsQuery } from "../store/slices/tasks
 
 import Board from "../components/Board";
 import Loading from "../components/Loading";
-import Layout from "../components/Layout";
+const Layout = lazy(() => import("../components/Layout"));
 
 type CreateBoardFormType = {
   boardTitle: string;

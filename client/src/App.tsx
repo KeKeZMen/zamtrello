@@ -1,14 +1,14 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { useAppDispatch } from "./hooks/reduxHooks";
 import { reauthUser } from "./store/thunks/authThunk";
 
 import RequireAuth from "./hocs/requiredAuth";
-import Mainpage from "./pages/Mainpage";
+const Mainpage = lazy(() => import("./pages/Mainpage"));
+const Boardpage = lazy(() => import("./pages/Boardpage"));
 import Loginpage from "./pages/Loginpage";
 import Registerpage from "./pages/Registerpage";
-import Boardpage from "./pages/Boardpage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -22,7 +22,9 @@ function App() {
       <Route
         element={
           <RequireAuth>
-            <Mainpage />
+            <Suspense>
+              <Mainpage />
+            </Suspense>
           </RequireAuth>
         }
         path="/"
@@ -31,7 +33,9 @@ function App() {
       <Route
         element={
           <RequireAuth>
-            <Boardpage />
+            <Suspense>
+              <Boardpage />
+            </Suspense>
           </RequireAuth>
         }
         path="/board/:id"
