@@ -13,7 +13,7 @@ const Layout: FC<PropsType> = ({ children }) => {
   const [isOpenedMenu, setIsOpenedMenu] = useState(false);
 
   return (
-    <Suspense fallback={<>Loading...</>}>
+    <>
       <Header setIsOpenedMenu={setIsOpenedMenu} />
       <Menu isOpenedMenu={isOpenedMenu} setIsOpenedMenu={setIsOpenedMenu} />
       <Container
@@ -26,9 +26,9 @@ const Layout: FC<PropsType> = ({ children }) => {
         }}
         maxWidth="xl"
       >
-        <Suspense>{children}</Suspense>
+        <Suspense fallback={<>Loading...</>}>{children}</Suspense>
       </Container>
-    </Suspense>
+    </>
   );
 };
 
