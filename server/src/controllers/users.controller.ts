@@ -64,7 +64,7 @@ export default class UserController {
     try {
       const userUuid = req.params.link
       await UserService.activateAccount(userUuid)
-      return res.redirect(process.env.CLIENT_URL || "http://localhsot:5173")
+      return res.redirect(process.env.CLIENT_URL!)
     } catch (error) {
       next(error)
     }

@@ -22,7 +22,8 @@ function start(): void {
     app.use(errorMiddleware)
 
     app.use(express.static("static"))
-    app.get("/", (req: Request, res: Response) => res.sendFile("/static/index.html", { root: "." }))
+    app.get("/", (req: Request, res: Response) => res.sendFile("/static/index.html", { root: "." }));
+    app.get(/^(?!\/api\b).*/, (req: Request, res: Response) => res.redirect("/"));
 
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (error) {
