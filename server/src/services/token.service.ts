@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import IUser from "../models/IUser.js";
-import prisma from "./db-service.js";
+import prisma from "./db.service.js";
 
 export default class TokenService {
   static generateTokens(userData: IUser) {

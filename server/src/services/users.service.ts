@@ -1,10 +1,10 @@
 import { createHash, randomUUID } from "crypto";
 
-import ApiError from "../exceptions/api-error.js";
+import ApiError from "../exceptions/api.error.js";
 import IUser from "../models/IUser.js";
-import prisma from "./db-service.js";
-import MailService from "./mail-service.js";
-import TokenService from "./token-service.js";
+import prisma from "./db.service.js";
+import MailService from "./mail.service.js";
+import TokenService from "./token.service.js";
 
 export default class UserService {
   static async login(login: string, password: string) {

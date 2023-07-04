@@ -6,7 +6,8 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "npx nodemon",
-    "build": "rimraf ./build && npx tsc"
+    "build": "rimraf ./build && npx tsc",
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "",

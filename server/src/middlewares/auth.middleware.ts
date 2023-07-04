@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import ApiError from "../exceptions/api-error.js";
+import ApiError from "../exceptions/api.error.js";
 import IUser from "../models/IUser.js";
-import TokenService from "../services/token-service.js";
+import TokenService from "../services/token.service.js";
 
 export default function (req: Request, res: Response, next: NextFunction) {
   try {

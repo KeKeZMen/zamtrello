@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator"
 
-import UserService from "../services/users-service.js";
+import UserService from "../services/users.service.js";
 
 export default class UserController {
   static async login(req: Request, res: Response, next: NextFunction) {

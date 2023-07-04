@@ -1,5 +1,5 @@
-import ApiError from "../exceptions/api-error.js";
-import prisma from "./db-service.js";
+import ApiError from "../exceptions/api.error.js";
+import prisma from "./db.service.js";
 
 export default class TasksService {
   static async createBoard(boardTitle: string, userId: number) {

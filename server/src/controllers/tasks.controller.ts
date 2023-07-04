@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import TasksService from "../services/tasks-service.js";
+import TasksService from "../services/tasks.service.js";
 
 export default class TasksController {
   static async createBoard(req: Request, res: Response, next: NextFunction) {
